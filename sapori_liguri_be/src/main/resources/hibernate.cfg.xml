@@ -18,5 +18,6 @@
 		<property name="hibernate.show_sql">true</property>
 
 		<mapping class="it.gruppofos.sapori_liguri_be.modelli.Pesto" />
+		<mapping class="it.gruppofos.sapori_liguri_be.modelli.Profilo" />
 	</session-factory>
 </hibernate-configuration>

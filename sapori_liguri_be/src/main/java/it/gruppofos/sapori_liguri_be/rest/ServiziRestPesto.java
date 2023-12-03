@@ -19,7 +19,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 @Path("/menu")
-public class ServiziRest {
+public class ServiziRestPesto {
 	static Session session = null;
 
 	@GET

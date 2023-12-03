@@ -33,7 +33,7 @@ public class Pesto {
 	@Column(name="descrizione", length = 1000, nullable = true)
 	private String descrizione;
 	
-	@Column(name="img", length = 100, nullable = true)
+	@Column(name="img", length = 400, nullable = true)
 	private String img;
 
 	public Integer getId() {
