@@ -1,4 +1,4 @@
-package it.gruppofos.sapori_liguri_be.provider;
+package it.gruppofos.saporiliguri.be.presentation.provider;
 
 import java.io.IOException;
 

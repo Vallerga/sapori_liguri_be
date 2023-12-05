@@ -1,4 +1,4 @@
-package it.gruppofos.sapori_liguri_be.modelli;
+package it.gruppofos.saporiliguri.be.db.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,33 +8,33 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Entity(name = "Pesto")
-@Table(name = "Pesto",
+@Entity(name = "Ricetta")
+@Table(name = "Ricetta",
 uniqueConstraints = {@UniqueConstraint(columnNames = {"ID"})})
-public class Pesto {
+public class RicettaEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "ID", nullable = false, unique = true, length = 11)
 	private Integer id;
 	
-	@Column (name = "indice",length = 40, nullable = true)
+	@Column (name = "indice", length = 40, nullable = true)
 	private Integer indice;
 	
 	@Column(name="ingrediente", length = 100, nullable = true)
 	private String ingrediente;
 	
-	@Column(name="prezzo", length = 40, nullable = true)
+	@Column(name="prezzo", length = 45, nullable = true)
 	private String prezzo;
 	
-	@Column(name="quantita", length = 40, nullable = true)
+	@Column(name="quantita", length = 45, nullable = true)
 	private String quantita;
 	
 	@Column(name="descrizione", length = 1000, nullable = true)
 	private String descrizione;
 	
-	@Column(name="img", length = 400, nullable = true)
-	private String img;
+	@Column(name="imgurl", length = 400, nullable = true)
+	private String imgUrl;
 
 	public Integer getId() {
 		return id;
@@ -84,11 +84,11 @@ public class Pesto {
 		this.descrizione = descrizione;
 	}
 
-	public String getImg() {
-		return img;
+	public String getImgUrl() {
+		return imgUrl;
 	}
 
-	public void setImg(String img) {
-		this.img = img;
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 }

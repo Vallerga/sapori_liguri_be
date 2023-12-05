@@ -1,4 +1,4 @@
-package it.gruppofos.sapori_liguri_be.backend.db;
+package it.gruppofos.saporiliguri.be.db;
 
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;

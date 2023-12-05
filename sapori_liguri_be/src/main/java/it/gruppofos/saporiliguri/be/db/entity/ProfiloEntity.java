@@ -1,4 +1,4 @@
-package it.gruppofos.sapori_liguri_be.modelli;
+package it.gruppofos.saporiliguri.be.db.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.UniqueConstraint;
 @Entity(name = "Profilo")
 @Table(name = "Profilo",
 uniqueConstraints = {@UniqueConstraint(columnNames = {"ID"})})
-public class Profilo {
+public class ProfiloEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

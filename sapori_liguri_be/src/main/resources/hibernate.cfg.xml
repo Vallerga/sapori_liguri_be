@@ -17,7 +17,7 @@
 		<!-- Outputs the SQL queries, should be disabled in Production -->
 		<property name="hibernate.show_sql">true</property>
 
-		<mapping class="it.gruppofos.sapori_liguri_be.modelli.Pesto" />
-		<mapping class="it.gruppofos.sapori_liguri_be.modelli.Profilo" />
+		<mapping class="it.gruppofos.saporiliguri.be.db.entity.RicettaEntity" />
+		<mapping class="it.gruppofos.saporiliguri.be.db.entity.ProfiloEntity" />
 	</session-factory>
 </hibernate-configuration>

@@ -1,14 +1,13 @@
-package it.gruppofos.sapori_liguri_be.rest;
+package it.gruppofos.saporiliguri.be.presentation.rest;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-
 import org.hibernate.Session;
 
-import it.gruppofos.sapori_liguri_be.backend.db.HibernateUtil;
-import it.gruppofos.sapori_liguri_be.modelli.Profilo;
+import it.gruppofos.saporiliguri.be.business.RicetteBusiness;
+import it.gruppofos.saporiliguri.be.db.HibernateUtil;
+import it.gruppofos.saporiliguri.be.db.entity.RicettaEntity;
+import it.gruppofos.saporiliguri.be.presentation.model.PestoModel;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -18,66 +17,36 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
-@Path("/home")
-public class ServiziRestProfilo {
+@Path("/menu")
+public class RicettaRest {
 	static Session session = null;
-
 	@GET
-	@Path("login/{test}")
+	@Path("pestoligure/{test}")
 	@Produces("application/json")
 	public Response testConnessione(@PathParam("test") String test) {
 		return Response.ok().status(200).build();
 	}
 
 	@GET
-	@Path("/login/profilo/")
+	@Path("/pestoligure/ingrediente")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Profilo emailPresente(Profilo p) {
-		Integer idemail = p.getId();
-
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			Profilo result = session.find(Profilo.class, idemail);//.contains(profilo);
-			System.out.println("idemail: " + idemail);
-			session.getTransaction().commit();
-			session.close();
-			return result;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
-		}
+	public PestoModel scaricaIngrediente(Integer param) {
+		return RicetteBusiness.singoloIngrediente(param);
 	}
 
 	@GET
-	@Path("/login/listaprofili/")
+	@Path("/pestoligure/listapesto")
 	@Produces("application/json")
-	public List<Profilo> listaProfili() {		
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<Profilo> criteria = builder.createQuery(Profilo.class);
-			criteria.from(Profilo.class);
-			List<Profilo> data = session.createQuery(criteria).getResultList();
-			session.getTransaction().commit();
-			session.close();
-
-			return data;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
-		}
+	public List<PestoModel> scaricaListaIngredienti() {
+		return RicetteBusiness.listaPestoModel();
 	}
 
 	@POST
-	@Path("/iscriviti/")
+	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Profilo aggiungiProfilo(Profilo p) {
+	public RicettaEntity aggiungiIngrediente(RicettaEntity p) {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
@@ -94,10 +63,10 @@ public class ServiziRestProfilo {
 	}
 	
 	@PUT
-	@Path("/iscriviti/")
+	@Path("/pestoligure/modifica")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Profilo modificaProfilo(Profilo p) {
+	public RicettaEntity modificaIngrediente(RicettaEntity p) {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
@@ -114,10 +83,10 @@ public class ServiziRestProfilo {
 	}
 
 	@DELETE
-	@Path("/iscriviti/")
+	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Profilo cancellaProfilo(Profilo p) {
+	public RicettaEntity cancellaIngrediente(RicettaEntity p) {
 		try {
 			session = HibernateUtil.getSessionFactory().getCurrentSession();
 			session.beginTransaction();
@@ -125,7 +94,7 @@ public class ServiziRestProfilo {
 			session.getTransaction().commit();
 			session.close();
 
-			return p;//Response.ok().build();
+			return p;
 		} finally {
 			// terminate session factory, otherwise program won't end
 			if (session != null)

@@ -1,11 +1,11 @@
-package it.gruppofos.sapori_liguri_be.applicazione;
+package it.gruppofos.saporiliguri.be.presentation.application;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import it.gruppofos.sapori_liguri_be.provider.ProviderFilter;
-import it.gruppofos.sapori_liguri_be.rest.ServiziRestPesto;
-import it.gruppofos.sapori_liguri_be.rest.ServiziRestProfilo;
+import it.gruppofos.saporiliguri.be.presentation.provider.ProviderFilter;
+import it.gruppofos.saporiliguri.be.presentation.rest.RicettaRest;
+import it.gruppofos.saporiliguri.be.presentation.rest.ProfiloRest;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
@@ -15,8 +15,8 @@ public class MyApplication extends Application {
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> s = new HashSet<>();
-        s.add(ServiziRestPesto.class);
-        s.add(ServiziRestProfilo.class);
+        s.add(RicettaRest.class);
+        s.add(ProfiloRest.class);
         s.add(ProviderFilter.class);	
 
         return s;
