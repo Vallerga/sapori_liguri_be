@@ -9,31 +9,30 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity(name = "Ricetta")
-@Table(name = "Ricetta",
-uniqueConstraints = {@UniqueConstraint(columnNames = {"ID"})})
+@Table(name = "Ricetta", uniqueConstraints = { @UniqueConstraint(columnNames = { "ID" }) })
 public class RicettaEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column (name = "ID", nullable = false, unique = true, length = 11)
+	@Column(name = "ID", nullable = false, unique = true, length = 11)
 	private Integer id;
-	
-	@Column (name = "indice", length = 40, nullable = true)
+
+	@Column(name = "indice", length = 40, nullable = true)
 	private Integer indice;
-	
-	@Column(name="ingrediente", length = 100, nullable = true)
+
+	@Column(name = "ingrediente", length = 100, nullable = true)
 	private String ingrediente;
-	
-	@Column(name="prezzo", length = 45, nullable = true)
+
+	@Column(name = "prezzo", length = 45, nullable = true)
 	private String prezzo;
-	
-	@Column(name="quantita", length = 45, nullable = true)
+
+	@Column(name = "quantita", length = 45, nullable = true)
 	private String quantita;
-	
-	@Column(name="descrizione", length = 1000, nullable = true)
+
+	@Column(name = "descrizione", length = 1000, nullable = true)
 	private String descrizione;
-	
-	@Column(name="imgurl", length = 400, nullable = true)
+
+	@Column(name = "imgurl", length = 400, nullable = true)
 	private String imgUrl;
 
 	public Integer getId() {
@@ -90,5 +89,59 @@ public class RicettaEntity {
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public RicettaEntity() {}
+	
+	private RicettaEntity(RicettaEntityBuilder builder) {
+		this.indice = builder.indice;
+		this.ingrediente = builder.ingrediente;
+		this.prezzo = builder.prezzo;
+		this.quantita = builder.quantita;
+		this.descrizione = builder.descrizione;
+		this.imgUrl = builder.imgUrl;
+	}
+
+	public static class RicettaEntityBuilder {
+		private Integer indice;
+		private String ingrediente;
+		private String prezzo;
+		private String quantita;
+		private String descrizione;
+		private String imgUrl;
+
+		public RicettaEntityBuilder setIndice(Integer indice) {
+			this.indice = indice;
+			return this;
+		}
+
+		public RicettaEntityBuilder setIngrediente(String ingrediente) {
+			this.ingrediente = ingrediente;
+			return this;
+		}
+
+		public RicettaEntityBuilder setPrezzo(String prezzo) {
+			this.prezzo = prezzo;
+			return this;
+		}
+
+		public RicettaEntityBuilder setQuantita(String quantita) {
+			this.quantita = quantita;
+			return this;
+		}
+
+		public RicettaEntityBuilder setDescrizione(String descrizione) {
+			this.descrizione = descrizione;
+			return this;
+		}
+
+		public RicettaEntityBuilder setImgUrl(String imgUrl) {
+			this.imgUrl = imgUrl;
+			return this;
+		}
+
+		public RicettaEntity build() {
+			return new RicettaEntity(this);
+		}
 	}
 }

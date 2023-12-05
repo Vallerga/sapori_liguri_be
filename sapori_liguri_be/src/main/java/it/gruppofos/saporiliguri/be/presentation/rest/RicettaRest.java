@@ -1,5 +1,6 @@
 package it.gruppofos.saporiliguri.be.presentation.rest;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -17,9 +18,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
+
 @Path("/menu")
 public class RicettaRest {
 	static Session session = null;
+
 	@GET
 	@Path("pestoligure/{test}")
 	@Produces("application/json")
@@ -46,22 +49,11 @@ public class RicettaRest {
 	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public RicettaEntity aggiungiIngrediente(RicettaEntity p) {
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.save(p);
-			session.getTransaction().commit();
-			session.close();
-
-			return p;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
-		}
+	public Response aggiungiIngrediente(PestoModel p) {
+		RicetteBusiness.inserisciIngrediente(p);		
+		return Response.ok().status(201).entity(p).build();
 	}
-	
+
 	@PUT
 	@Path("/pestoligure/modifica")
 	@Produces("application/json")

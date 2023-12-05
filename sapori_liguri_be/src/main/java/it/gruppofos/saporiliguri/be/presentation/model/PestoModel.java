@@ -33,6 +33,8 @@ public class PestoModel {
 		return imgUrl;
 	}
 
+	public PestoModel() {}
+	
 	private PestoModel(PestoModelBuilder builder) {
 		this.indice = builder.indice;
 		this.ingrediente = builder.ingrediente;

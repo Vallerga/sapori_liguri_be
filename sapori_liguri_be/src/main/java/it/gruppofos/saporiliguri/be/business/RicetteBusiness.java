@@ -1,5 +1,7 @@
 package it.gruppofos.saporiliguri.be.business;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,6 +12,7 @@ import org.hibernate.Session;
 import it.gruppofos.saporiliguri.be.db.HibernateUtil;
 import it.gruppofos.saporiliguri.be.db.entity.RicettaEntity;
 import it.gruppofos.saporiliguri.be.presentation.model.PestoModel;
+import jakarta.ws.rs.core.Response;
 
 public class RicetteBusiness {
 
@@ -19,47 +22,60 @@ public class RicetteBusiness {
 
 	public static PestoModel singoloIngrediente(Integer id) {
 		Session session = null;
-
-		RicettaEntity ingrediente = null;
+		RicettaEntity dbOutput = null;
 		PestoModel result = null;
 
 		session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		ingrediente = session.find(RicettaEntity.class, id);
-		if (ingrediente != null) {
-			result = new PestoModel.PestoModelBuilder().build();
+		dbOutput = session.find(RicettaEntity.class, id);
+		if (dbOutput != null) {
+			result = new PestoModel.PestoModelBuilder().setIndice(dbOutput.getIndice())
+					.setIngrediente(dbOutput.getIngrediente()).setPrezzo(dbOutput.getPrezzo())
+					.setQuantita(dbOutput.getQuantita()).setDescrizione(dbOutput.getDescrizione())
+					.setImgUrl(dbOutput.getImgUrl()).build();
 
-//					, ingrediente.getIndice(),
-//					ingrediente.getIngrediente(), ingrediente.getPrezzo(), ingrediente.getQuantita(),
-//					ingrediente.getDescrizione(), ingrediente.getImgUrl()).build();
 			session.getTransaction().commit();
 		}
-
 		return result;
-
 	}
 
 	public static List<PestoModel> listaPestoModel() {
 		Session session = null;
-		try {
-			List<RicettaEntity> data = null;
-			List<PestoModel> result = null;
-			PestoModel pesto = null;
+		List<RicettaEntity> allTableMember = null;
+		List<PestoModel> result = new ArrayList<>();
+		PestoModel pesto = null;
 
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			CriteriaBuilder builder = session.getCriteriaBuilder();
-			CriteriaQuery<RicettaEntity> criteria = builder.createQuery(RicettaEntity.class);
-			criteria.from(RicettaEntity.class);
-			data = session.createQuery(criteria).getResultList(); // <-- creare builder pattern
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<RicettaEntity> criteria = builder.createQuery(RicettaEntity.class);
+		criteria.from(RicettaEntity.class);
+		allTableMember = session.createQuery(criteria).getResultList();
+
+		if (allTableMember != null) {
+			for (RicettaEntity member : allTableMember) {
+
+				pesto = new PestoModel.PestoModelBuilder().setIndice(member.getIndice())
+						.setIngrediente(member.getIngrediente()).setPrezzo(member.getPrezzo())
+						.setQuantita(member.getQuantita()).setDescrizione(member.getDescrizione())
+						.setImgUrl(member.getImgUrl()).build();
+				result.add(pesto);
+			}
 			session.getTransaction().commit();
-			session.close();
-
-			return result;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
 		}
+		return result;
+	}
+
+	public static void inserisciIngrediente(PestoModel pojoParam) {
+		Session session = null;
+		RicettaEntity nuovoIngrediente = new RicettaEntity.RicettaEntityBuilder().setIndice(pojoParam.getIndice())
+				.setIngrediente(pojoParam.getIngrediente()).setPrezzo(pojoParam.getPrezzo())
+				.setQuantita(pojoParam.getQuantita()).setDescrizione(pojoParam.getDescrizione())
+				.setImgUrl(pojoParam.getImgUrl()).build();
+		
+		session = HibernateUtil.getSessionFactory().getCurrentSession();		
+		session.beginTransaction();
+		session.save(nuovoIngrediente);
+		session.getTransaction().commit();
 	}
 }
