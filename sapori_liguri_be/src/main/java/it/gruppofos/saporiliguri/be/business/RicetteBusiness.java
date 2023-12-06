@@ -31,8 +31,8 @@ public class RicetteBusiness {
 		dbOutput = session.find(EntityRicetta1.class, id);
 		if (dbOutput != null) {
 			result = new PojoRicettaBuilder().setIndice(dbOutput.getIndice()).setIngrediente(dbOutput.getIngrediente())
-					.setPrezzo(dbOutput.getPrezzo()).setQuantita(dbOutput.getQuantita())
-					.setImgUrl(dbOutput.getImgUrl()).build();
+					.setPrezzo(dbOutput.getPrezzo()).setQuantita(dbOutput.getQuantita()).setImgUrl(dbOutput.getImgUrl())
+					.build();
 
 			session.getTransaction().commit();
 		}
@@ -101,7 +101,7 @@ public class RicetteBusiness {
 		session.getTransaction().commit();
 	}
 
-	public static void eliminaIngredienteId(Integer paramId) {
+	public static EntityRicetta1 eliminaIngredienteId(Integer paramId) {
 		EntityRicetta1 dbOutput = null;
 		Session session = null;
 		CriteriaBuilder builder;
@@ -116,12 +116,9 @@ public class RicetteBusiness {
 		myQuery = criteria.from(EntityRicetta1.class);
 		criteria.select(myQuery).where(builder.equal(myQuery.get("indice"), paramId));
 		dbOutput = session.createQuery(criteria).getSingleResult();
-		System.out.println("dbOutput: " + dbOutput.toString());
-		if (dbOutput != null) {
-			session.delete(dbOutput);
-			session.getTransaction().commit();
-		} else {
-			System.out.println("dimmelo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		}
+		session.delete(dbOutput);
+		session.getTransaction().commit();
+		return dbOutput;
+
 	}
 }

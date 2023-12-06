@@ -70,6 +70,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>sapori_liguri_be</finalName>
+		<finalName>saporiliguri</finalName>
 	</build>
 </project>

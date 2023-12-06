@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import it.gruppofos.saporiliguri.be.business.RicetteBusiness;
+import it.gruppofos.saporiliguri.be.db.entity.EntityRicetta1;
 import it.gruppofos.saporiliguri.be.presentation.model.PojoRicetta;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -77,8 +78,8 @@ public class RicettaRest {
 
 	public Response cancellaIngredientebyId(@QueryParam("indice") Integer paramId) {
 		System.out.println("paramId: " + paramId);
-		RicetteBusiness.eliminaIngredienteId(paramId);
-		return Response.ok().status(201).build();
+		EntityRicetta1 ingredienteEliminato = RicetteBusiness.eliminaIngredienteId(paramId);
+		return Response.ok().status(201).entity(ingredienteEliminato).build();
 	}
 }
 

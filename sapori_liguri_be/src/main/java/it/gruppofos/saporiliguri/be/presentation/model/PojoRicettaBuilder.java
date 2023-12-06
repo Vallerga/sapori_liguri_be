@@ -45,6 +45,16 @@ public class PojoRicettaBuilder {
 	}
 
 	public PojoRicetta build() {
-		return new PojoRicetta(id, indice, ingrediente, prezzo, quantita, descrizione, imgUrl);
+		PojoRicetta result =  new PojoRicetta();
+		
+		result.setId(id);
+		result.setIndice(indice);
+		result.setIngrediente(ingrediente);
+		result.setPrezzo(prezzo);
+		result.setQuantita(quantita);
+		result.setDescrizione(descrizione);
+		result.setImgUrl(imgUrl);
+		
+		return result;
 	}
 }

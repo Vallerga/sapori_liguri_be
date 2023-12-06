@@ -9,18 +9,6 @@ public class PojoRicetta {
 	private String descrizione;
 	private String imgUrl;
 
-	public PojoRicetta() {}
-	
-	public PojoRicetta(Integer id, Integer indice, String ingrediente, String prezzo, String quantita, String descrizione, String imgUrl) {
-		this.id = id;
-		this.indice = indice;
-		this.ingrediente = ingrediente;
-		this.prezzo = prezzo;
-		this.quantita = quantita;
-		this.descrizione = descrizione;
-		this.imgUrl = imgUrl;
-	}
-
 	public Integer getId() {
 		return id;
 	}
