@@ -1,14 +1,11 @@
 package it.gruppofos.saporiliguri.be.presentation.rest;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
 
 import it.gruppofos.saporiliguri.be.business.RicetteBusiness;
-import it.gruppofos.saporiliguri.be.db.HibernateUtil;
-import it.gruppofos.saporiliguri.be.db.entity.RicettaEntity;
-import it.gruppofos.saporiliguri.be.presentation.model.PestoModel;
+import it.gruppofos.saporiliguri.be.presentation.model.PojoRicetta;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -17,6 +14,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 
 @Path("/menu")
@@ -34,14 +32,14 @@ public class RicettaRest {
 	@Path("/pestoligure/ingrediente")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public PestoModel scaricaIngrediente(Integer param) {
+	public PojoRicetta scaricaIngrediente(Integer param) {
 		return RicetteBusiness.singoloIngrediente(param);
 	}
 
 	@GET
 	@Path("/pestoligure/listapesto")
 	@Produces("application/json")
-	public List<PestoModel> scaricaListaIngredienti() {
+	public List<PojoRicetta> scaricaListaIngredienti() {
 		return RicetteBusiness.listaPestoModel();
 	}
 
@@ -49,8 +47,8 @@ public class RicettaRest {
 	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response aggiungiIngrediente(PestoModel p) {
-		RicetteBusiness.inserisciIngrediente(p);		
+	public Response aggiungiIngrediente(PojoRicetta p) {
+		RicetteBusiness.inserisciIngrediente(p);
 		return Response.ok().status(201).entity(p).build();
 	}
 
@@ -58,39 +56,29 @@ public class RicettaRest {
 	@Path("/pestoligure/modifica")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public RicettaEntity modificaIngrediente(RicettaEntity p) {
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.update(p);
-			session.getTransaction().commit();
-			session.close();
-
-			return p;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
-		}
+	public Response modificaIngrediente(PojoRicetta p) {
+		RicetteBusiness.modificaIngrediente(p);
+		return Response.ok().status(201).entity(p).build();
 	}
 
 	@DELETE
 	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public RicettaEntity cancellaIngrediente(RicettaEntity p) {
-		try {
-			session = HibernateUtil.getSessionFactory().getCurrentSession();
-			session.beginTransaction();
-			session.delete(p);
-			session.getTransaction().commit();
-			session.close();
+	public Response cancellaIngrediente(PojoRicetta p) {
+		RicetteBusiness.eliminaIngrediente(p);
+		return Response.ok().status(200).entity(p).build();
+	}
+	
+	@DELETE 
+	@Path("/pestoligure2/{indice}")
+	@Produces("application/json")
+	@Consumes("application/json")
 
-			return p;
-		} finally {
-			// terminate session factory, otherwise program won't end
-			if (session != null)
-				session.close();
-		}
+	public Response cancellaIngredientebyId(@QueryParam("indice") Integer paramId) {
+		System.out.println("paramId: " + paramId);
+		RicetteBusiness.eliminaIngredienteId(paramId);
+		return Response.ok().status(201).build();
 	}
 }
+

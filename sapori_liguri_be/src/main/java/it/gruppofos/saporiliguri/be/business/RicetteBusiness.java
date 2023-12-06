@@ -1,18 +1,19 @@
 package it.gruppofos.saporiliguri.be.business;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
 import it.gruppofos.saporiliguri.be.db.HibernateUtil;
-import it.gruppofos.saporiliguri.be.db.entity.RicettaEntity;
-import it.gruppofos.saporiliguri.be.presentation.model.PestoModel;
-import jakarta.ws.rs.core.Response;
+import it.gruppofos.saporiliguri.be.db.entity.EntityRicetta1;
+import it.gruppofos.saporiliguri.be.db.entity.EntityRicetta1Builder;
+import it.gruppofos.saporiliguri.be.presentation.model.PojoRicetta;
+import it.gruppofos.saporiliguri.be.presentation.model.PojoRicettaBuilder;
 
 public class RicetteBusiness {
 
@@ -20,18 +21,17 @@ public class RicetteBusiness {
 
 	}
 
-	public static PestoModel singoloIngrediente(Integer id) {
+	public static PojoRicetta singoloIngrediente(Integer id) {
 		Session session = null;
-		RicettaEntity dbOutput = null;
-		PestoModel result = null;
+		EntityRicetta1 dbOutput = null;
+		PojoRicetta result = null;
 
 		session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		dbOutput = session.find(RicettaEntity.class, id);
+		dbOutput = session.find(EntityRicetta1.class, id);
 		if (dbOutput != null) {
-			result = new PestoModel.PestoModelBuilder().setIndice(dbOutput.getIndice())
-					.setIngrediente(dbOutput.getIngrediente()).setPrezzo(dbOutput.getPrezzo())
-					.setQuantita(dbOutput.getQuantita()).setDescrizione(dbOutput.getDescrizione())
+			result = new PojoRicettaBuilder().setIndice(dbOutput.getIndice()).setIngrediente(dbOutput.getIngrediente())
+					.setPrezzo(dbOutput.getPrezzo()).setQuantita(dbOutput.getQuantita())
 					.setImgUrl(dbOutput.getImgUrl()).build();
 
 			session.getTransaction().commit();
@@ -39,26 +39,25 @@ public class RicetteBusiness {
 		return result;
 	}
 
-	public static List<PestoModel> listaPestoModel() {
+	public static List<PojoRicetta> listaPestoModel() {
 		Session session = null;
-		List<RicettaEntity> allTableMember = null;
-		List<PestoModel> result = new ArrayList<>();
-		PestoModel pesto = null;
+		List<EntityRicetta1> allTableMember = null;
+		List<PojoRicetta> result = new ArrayList<>();
+		PojoRicetta pesto = null;
 
 		session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		CriteriaBuilder builder = session.getCriteriaBuilder();
-		CriteriaQuery<RicettaEntity> criteria = builder.createQuery(RicettaEntity.class);
-		criteria.from(RicettaEntity.class);
+		CriteriaQuery<EntityRicetta1> criteria = builder.createQuery(EntityRicetta1.class);
+		criteria.from(EntityRicetta1.class);
 		allTableMember = session.createQuery(criteria).getResultList();
 
 		if (allTableMember != null) {
-			for (RicettaEntity member : allTableMember) {
+			for (EntityRicetta1 member : allTableMember) {
 
-				pesto = new PestoModel.PestoModelBuilder().setIndice(member.getIndice())
-						.setIngrediente(member.getIngrediente()).setPrezzo(member.getPrezzo())
-						.setQuantita(member.getQuantita()).setDescrizione(member.getDescrizione())
-						.setImgUrl(member.getImgUrl()).build();
+				pesto = new PojoRicettaBuilder().setIndice(member.getIndice()).setIngrediente(member.getIngrediente())
+						.setPrezzo(member.getPrezzo()).setQuantita(member.getQuantita())
+						.setDescrizione(member.getDescrizione()).setImgUrl(member.getImgUrl()).build();
 				result.add(pesto);
 			}
 			session.getTransaction().commit();
@@ -66,16 +65,63 @@ public class RicetteBusiness {
 		return result;
 	}
 
-	public static void inserisciIngrediente(PestoModel pojoParam) {
+	public static void inserisciIngrediente(PojoRicetta pojoParam) {
 		Session session = null;
-		RicettaEntity nuovoIngrediente = new RicettaEntity.RicettaEntityBuilder().setIndice(pojoParam.getIndice())
+		EntityRicetta1 nuovoIngrediente = new EntityRicetta1Builder().setIndice(pojoParam.getIndice())
 				.setIngrediente(pojoParam.getIngrediente()).setPrezzo(pojoParam.getPrezzo())
 				.setQuantita(pojoParam.getQuantita()).setDescrizione(pojoParam.getDescrizione())
 				.setImgUrl(pojoParam.getImgUrl()).build();
-		
-		session = HibernateUtil.getSessionFactory().getCurrentSession();		
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.save(nuovoIngrediente);
 		session.getTransaction().commit();
+	}
+
+	public static void modificaIngrediente(PojoRicetta pojoParam) {
+		Session session = null;
+		EntityRicetta1 nuovoIngrediente = new EntityRicetta1Builder().setId(pojoParam.getId())
+				.setIndice(pojoParam.getIndice()).setIngrediente(pojoParam.getIngrediente())
+				.setPrezzo(pojoParam.getPrezzo()).setQuantita(pojoParam.getQuantita())
+				.setDescrizione(pojoParam.getDescrizione()).setImgUrl(pojoParam.getImgUrl()).build();
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.update(nuovoIngrediente);
+		session.getTransaction().commit();
+	}
+
+	public static void eliminaIngrediente(PojoRicetta pojoParam) {
+		Session session = null;
+		EntityRicetta1 nuovoIngrediente = new EntityRicetta1Builder().setId(pojoParam.getId()).build();
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		session.delete(nuovoIngrediente);
+		session.getTransaction().commit();
+	}
+
+	public static void eliminaIngredienteId(Integer paramId) {
+		EntityRicetta1 dbOutput = null;
+		Session session = null;
+		CriteriaBuilder builder;
+		CriteriaQuery<EntityRicetta1> criteria;
+		Root<EntityRicetta1> myQuery;
+
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+
+		builder = session.getCriteriaBuilder();
+		criteria = builder.createQuery(EntityRicetta1.class);
+		myQuery = criteria.from(EntityRicetta1.class);
+		criteria.select(myQuery).where(builder.equal(myQuery.get("indice"), paramId));
+		dbOutput = session.createQuery(criteria).getSingleResult();
+		System.out.println("dbOutput: " + dbOutput.toString());
+		if (dbOutput != null) {
+			session.delete(dbOutput);
+			session.getTransaction().commit();
+		} else {
+			System.out.println("dimmelo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		}
 	}
 }
