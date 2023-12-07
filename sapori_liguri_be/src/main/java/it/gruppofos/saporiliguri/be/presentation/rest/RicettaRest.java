@@ -16,6 +16,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 @Path("/menu")
@@ -29,57 +30,73 @@ public class RicettaRest {
 		return Response.ok().status(200).build();
 	}
 
+//	@GET
+//	@Path("/pestoligure/ingrediente")
+//	@Produces("application/json")
+//	@Consumes("application/json")
+//	public PojoRicetta scaricaIngrediente(Integer param) {
+//		return RicetteBusiness.singoloIngrediente(param);
+//	}
+
 	@GET
 	@Path("/pestoligure/ingrediente")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public PojoRicetta scaricaIngrediente(Integer param) {
-		return RicetteBusiness.singoloIngrediente(param);
+	public Response scaricaIngrediente(Integer indiceIngrediente) {
+		try {
+			PojoRicetta result = RicetteBusiness.prendiConIndice(indiceIngrediente);
+			return Response.ok(result).status(200).build();
+		} catch (WebApplicationException e) {
+			return Response.ok().status(404, "ELEMENT NOT FOUND").build();
+		}
 	}
 
 	@GET
 	@Path("/pestoligure/listapesto")
 	@Produces("application/json")
-	public List<PojoRicetta> scaricaListaIngredienti() {
-		return RicetteBusiness.listaPestoModel();
+	public Response scaricaListaIngredienti() {
+		try {
+			List<PojoRicetta> lista = RicetteBusiness.listaPestoModel();
+			return Response.ok(lista).status(200).build();
+		} catch (WebApplicationException e) {
+			return Response.ok().status(404, "LIST NOT FOUND").build();
+		}
 	}
 
 	@POST
 	@Path("/pestoligure/")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response aggiungiIngrediente(PojoRicetta p) {
-		RicetteBusiness.inserisciIngrediente(p);
-		return Response.ok().status(201).entity(p).build();
+	public Response aggiungiIngrediente(PojoRicetta ingredienteNuovo) {
+		try {
+			RicetteBusiness.inserisciIngrediente(ingredienteNuovo);
+			return Response.ok(ingredienteNuovo).status(201).build();
+		} catch (WebApplicationException e) {
+			return Response.ok().status(406, "NOT ACCEPTABLE").build();
+		}
 	}
 
 	@PUT
-	@Path("/pestoligure/modifica")
+	@Path("/pestoligure/modifica/{indice}")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response modificaIngrediente(PojoRicetta p) {
-		RicetteBusiness.modificaIngrediente(p);
-		return Response.ok().status(201).entity(p).build();
+	public Response modificaIngrediente(PojoRicetta modificaIngrediente, @QueryParam("indice") Integer paramId) {
+		try {
+			PojoRicetta result = RicetteBusiness.modificaIngrediente(modificaIngrediente, paramId);
+			return Response.ok(result).status(201).build();
+		} catch (WebApplicationException e) {
+			return Response.ok().status(e.getResponse().getStatus(), "NOT MODIFIED").build();
+		}
 	}
 
 	@DELETE
-	@Path("/pestoligure/")
-	@Produces("application/json")
-	@Consumes("application/json")
-	public Response cancellaIngrediente(PojoRicetta p) {
-		RicetteBusiness.eliminaIngrediente(p);
-		return Response.ok().status(200).entity(p).build();
-	}
-	
-	@DELETE 
 	@Path("/pestoligure2/{indice}")
 	@Produces("application/json")
 	@Consumes("application/json")
 
-	public Response cancellaIngredientebyId(@QueryParam("indice") Integer paramId) {
+	public Response cancellaIngredienteConIndice(@QueryParam("indice") Integer paramId) {
 		System.out.println("paramId: " + paramId);
-		EntityRicetta1 ingredienteEliminato = RicetteBusiness.eliminaIngredienteId(paramId);
+		EntityRicetta1 ingredienteEliminato = RicetteBusiness.eliminaConIndice(paramId);
 		return Response.ok().status(201).entity(ingredienteEliminato).build();
 	}
 }
-

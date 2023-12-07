@@ -45,6 +45,16 @@ public class EntityRicetta1Builder {
 	}
 
 	public EntityRicetta1 build() {
-		return new EntityRicetta1(id, indice, ingrediente, prezzo, quantita, descrizione, imgUrl);
+		EntityRicetta1 newEntity =  new EntityRicetta1();
+		
+		newEntity.setId(id);
+		newEntity.setIndice(indice);
+		newEntity.setIngrediente(ingrediente);
+		newEntity.setPrezzo(prezzo);
+		newEntity.setQuantita(quantita);
+		newEntity.setDescrizione(descrizione);
+		newEntity.setImgUrl(imgUrl);
+		
+		return newEntity;
 	}
 }

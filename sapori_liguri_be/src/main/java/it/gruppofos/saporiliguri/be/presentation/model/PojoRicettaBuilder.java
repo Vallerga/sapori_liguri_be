@@ -1,18 +1,12 @@
 package it.gruppofos.saporiliguri.be.presentation.model;
 
 public class PojoRicettaBuilder {
-	private Integer id;
 	private Integer indice;
 	private String ingrediente;
 	private String prezzo;
 	private String quantita;
 	private String descrizione;
 	private String imgUrl;
-
-	public PojoRicettaBuilder setId(Integer id) {
-		this.id = id;
-		return this;
-	}
 	
 	public PojoRicettaBuilder setIndice(Integer indice) {
 		this.indice = indice;
@@ -45,16 +39,15 @@ public class PojoRicettaBuilder {
 	}
 
 	public PojoRicetta build() {
-		PojoRicetta result =  new PojoRicetta();
+		PojoRicetta newPojo =  new PojoRicetta();
 		
-		result.setId(id);
-		result.setIndice(indice);
-		result.setIngrediente(ingrediente);
-		result.setPrezzo(prezzo);
-		result.setQuantita(quantita);
-		result.setDescrizione(descrizione);
-		result.setImgUrl(imgUrl);
+		newPojo.setIndice(indice);
+		newPojo.setIngrediente(ingrediente);
+		newPojo.setPrezzo(prezzo);
+		newPojo.setQuantita(quantita);
+		newPojo.setDescrizione(descrizione);
+		newPojo.setImgUrl(imgUrl);
 		
-		return result;
+		return newPojo;
 	}
 }

@@ -1,21 +1,12 @@
 package it.gruppofos.saporiliguri.be.presentation.model;
 
 public class PojoRicetta {
-	private Integer id;
 	private Integer indice;
 	private String ingrediente;
 	private String prezzo;
 	private String quantita;
 	private String descrizione;
 	private String imgUrl;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Integer getIndice() {
 		return indice;

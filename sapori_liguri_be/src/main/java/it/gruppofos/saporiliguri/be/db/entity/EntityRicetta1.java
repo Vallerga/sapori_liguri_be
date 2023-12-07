@@ -35,18 +35,6 @@ public class EntityRicetta1 {
 	@Column(name = "imgurl", length = 400, nullable = true)
 	private String imgUrl;
 
-	public EntityRicetta1() {}
-	
-	public EntityRicetta1(Integer id, Integer indice, String ingrediente, String prezzo, String quantita, String descrizione, String imgUrl) {
-		this.id = id;
-		this.indice = indice;
-		this.ingrediente = ingrediente;
-		this.prezzo = prezzo;
-		this.quantita = quantita;
-		this.descrizione = descrizione;
-		this.imgUrl = imgUrl;
-	}
-
 	public Integer getId() {
 		return id;
 	}
